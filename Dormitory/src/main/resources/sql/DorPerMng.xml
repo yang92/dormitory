@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.dormitory.dao.DorPerMngDao">
+	<select id="selectDorPerMngByGrade" resultType="java.lang.Integer" parameterType="java.util.HashMap">
+		SELECT POS_DATE	
+		FROM DOR_PER_MNG 
+		WHERE GRADE = #{grade} AND 
+		USE_YN = 'Y'
+	</select>
+
+	<select id="selectDorPerMng" resultType="java.util.HashMap"
+		parameterType="java.util.HashMap">
+		SELECT SEQ_NO, GRADE, POS_DATE, USE_YN
+		FROM DOR_PER_MNG
+		ORDER BY GRADE DESC, POS_DATE ASC
+	</select>
+
+	<insert id="insertDorPerMng" parameterType="java.util.HashMap">
+		INSERT INTO	DOR_PER_MNG VALUES ((SELECT NVL(MAX(TO_NUMBER(SEQ_NO)), 0) + 1
+		FROM DOR_PER_MNG), #{grade}, #{posDate}, #{useYn}
+		)
+	</insert>
+
+	<update id="updateDorPerMngByUseYn" parameterType="java.util.HashMap">
+		UPDATE
+		DOR_PER_MNG SET
+		USE_YN = 'N'
+		WHERE GRADE = #{grade}
+	</update>
+
+	<update id="updateDorPerMng" parameterType="java.util.HashMap">
+		UPDATE DOR_PER_MNG SET GRADE = #{grade}, POS_DATE = #{posDate}, USE_YN = #{useYn}
+		WHERE SEQ_NO = #{seqNo}
+	</update>
+
+	<delete id="deleteDorPerMng" parameterType="java.util.HashMap">
+		DELETE FROM
+		DOR_PER_MNG
+		WHERE SEQ_NO = #{seqNo}
+	</delete>
+</mapper>
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.dormitory.dao.MemberDao">
+	<resultMap type="MemberDto" id="MemberResultMap">
+		<result property="id" column="id" />
+		<result property="pw" column="pw" />
+		<result property="name" column="name" />
+	</resultMap>
+
+	<select id="selectMember" resultType="java.util.HashMap" parameterType="java.util.HashMap">
+		SELECT ID, PW, NAME, GRADE FROM DOR_MEMBER
+		WHERE 1 = 1
+		<if test="id != null and id!=''">
+			AND ID = #{id}
+		</if>
+	</select>
+
+	<insert id="insertMember" parameterType="com.dormitory.dto.MemberDto">
+		INSERT INTO DOR_MEMBER
+		VALUES (#{id}, #{pw}, #{name}, #{grade}, TO_CHAR(SYSDATE,
+		'YYYYMMDDHH24MISS'))
+	</insert>
+</mapper>
+
+
+
+
+
+
+
+
+
+

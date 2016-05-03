@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.dormitory.dao.DorReqDao">
+	<resultMap type="MemberDto" id="MemberResultMap">
+		<result property="id" column="id" />
+		<result property="pw" column="pw" />
+		<result property="name" column="name" />
+	</resultMap>
+
+	<insert id="insertDorReq" parameterType="java.util.HashMap">
+		INSERT INTO DOR_REQ VALUES ((SELECT NVL(MAX(TO_NUMBER(SEQ_NO)), 0) + 1
+		FROM DOR_REQ), #{id}, #{startDate}, #{endDate}, TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS'), NULL,1, NULL)
+
+	</insert>
+
+	<select id="selectDorReqById" resultType="java.util.HashMap" parameterType="java.util.HashMap">
+		SELECT SEQ_NO, ID, START_DATE, END_DATE, REQ_DATE, APP_DATE, STATE,	EXP
+		FROM DOR_REQ
+		<if test="id != null and id!=''">
+			WHERE ID = #{id}
+		</if>
+	</select>
+
+	<select id="selectDorReqByUseDate" resultType="java.lang.Integer" parameterType="java.util.HashMap">
+		SELECT NVL(SUM(TO_DATE(END_DATE) - TO_DATE(START_DATE)),0) AS USE_DATE FROM DOR_REQ
+		WHERE ID = #{id} AND STATE = '2'
+	</select>
+
+	<update id="updateDorReq" parameterType="java.util.HashMap">
+		UPDATE DOR_REQ SET STATE = #{state}
+		, EXP = #{exp}, APP_DATE = TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
+		WHERE SEQ_NO = #{seqNo}
+	</update>
+</mapper>
+
+
+
+
+
+
+
+
+
+
